@@ -58,7 +58,7 @@ function StartState:render()
     if highlighted == 2 then
         love.graphics.setColor(103, 255, 255, 255)
     end
-    love.graphics.printf("Randomize", 0, VIRTUAL_HEIGHT / 2 + 90,
+    love.graphics.printf("Randomize", 0, VIRTUAL_HEIGHT / 2 + 105,
         VIRTUAL_WIDTH, 'center')
 
     -- reset the color
