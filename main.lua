@@ -86,17 +86,15 @@ function love.load()
     }
     gStateMachine:change('start')
 
-    -- a table we'll use to keep track of which keys have been pressed this
-    -- frame, to get around the fact that LÖVE's default callback won't let us
-    -- test for input from within other functions
-    love.keyboard.keysPressed = {}
+     -- initialize input table
+     love.keyboard.keysPressed = {}
+
+     -- initialize mouse input table
+     love.mouse.buttonsPressed = {}
 end
 
 --[[
-    Called whenever we change the dimensions of our window, as by dragging
-    out its bottom corner, for example. In this case, we only need to worry
-    about calling out to `push` to handle the resizing. Takes in a `w` and
-    `h` variable representing width and height, respectively.
+    Called whenever we change the dimensions of our window
 ]]
 function love.resize(w, h)
     push:resize(w, h)
@@ -109,32 +107,34 @@ function love.update(dt)
     -- this time, we pass in dt to the state object we're currently using
     gStateMachine:update(dt)
 
-    -- reset keys pressed
+    -- reset keys/buttons pressed
     love.keyboard.keysPressed = {}
+    love.mouse.buttonsPressed = {}
 end
 
---[[
-    A callback that processes key strokes as they happen, just the once.
-    Does not account for keys that are held down, which is handled by a
-    separate function (`love.keyboard.isDown`). Useful for when we want
-    things to happen right away, just once, like when we want to quit.
-]]
 function love.keypressed(key)
     -- add to our table of keys pressed this frame
     love.keyboard.keysPressed[key] = true
 end
 
+function love.mousepressed(x, y, button)
+    love.mouse.buttonsPressed[button] = {true, x, y}
+end
+
 --[[
-    A custom function that will let us test for individual keystrokes outside
-    of the default `love.keypressed` callback, since we can't call that logic
-    elsewhere by default.
+    Custom function to extend LÖVE's input handling; returns whether a given
+    key was set to true in our input table this frame.
 ]]
 function love.keyboard.wasPressed(key)
-    if love.keyboard.keysPressed[key] then
-        return true
-    else
-        return false
-    end
+    return love.keyboard.keysPressed[key]
+end
+
+--[[
+    Equivalent to our keyboard function from before, but returns a table containing
+    the coordinates too
+]]
+function love.mouse.wasPressed(button)
+    return love.mouse.buttonsPressed[button]
 end
 
 --[[
