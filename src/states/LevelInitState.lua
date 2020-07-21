@@ -12,6 +12,8 @@
 -- Inherits empty methods from base class
 LevelInitState = Class{__includes = BaseState}
 
+local cells = {}
+
 --[[
     We initialize what's in our LevelInit via a state table that we pass between
     states as we go from creating to playing
@@ -19,19 +21,20 @@ LevelInitState = Class{__includes = BaseState}
 function LevelInitState:enter(params)
     -- randomize cells if user has selected that option
     if params.setup == 2 then
-        local cells = {}
 
         -- number of rows
-        for i = 1, (VIRTUAL_HEIGHT - 20) / 5 do
-            local row = {}
+        for i = 1, (VIRTUAL_HEIGHT - 20) / 10 do
+            cells[i] = {}
 
             -- number of columns
-            for j = 1, VIRTUAL_WIDTH / 5 do
+            for j = 1, VIRTUAL_WIDTH / 10 do
                 -- whether a cell is filled
-                local filled = math.random(0, 1) == 0 and false or true
-                table.insert(row, filled)
+                local filled = false
+                if math.random(10) == 7 then
+                    filled = true
+                end
+                cells[i][j] = filled
             end
-            table.insert(cells, row)
         end
 
         gStateMachine:change('play', cells)
@@ -45,6 +48,8 @@ function LevelInitState:update(dt)
 end
 
 function LevelInitState:render()
+    renderBoard(cells)
+
     -- pause text, if paused
     if self.paused then
         love.graphics.setFont(gFonts['large'])

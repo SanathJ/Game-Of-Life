@@ -27,6 +27,8 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
+    renderBoard(self.cells)
+
     -- pause text, if paused
     if self.paused then
         love.graphics.setFont(gFonts['large'])
