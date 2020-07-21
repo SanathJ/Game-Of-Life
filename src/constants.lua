@@ -18,4 +18,4 @@ VIRTUAL_WIDTH = 1280
 VIRTUAL_HEIGHT = 720
 
 -- update rate of game
-TICK_RATE = 0.60
+TICK_RATE = 0.333
