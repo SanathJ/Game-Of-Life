@@ -20,17 +20,32 @@ local cells
     states as we go from creating to playing
 ]]
 function PlayState:enter(params)
-    cells = params.cells
+    cells = params
+    self.paused = false
 end
 
 function PlayState:update(dt)
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
+    if love.keyboard.wasPressed('p') then
+        self.paused = not self.paused
+    end
 end
 
 function PlayState:render()
     renderBoard(cells)
+
+    love.graphics.setFont(gFonts['small'])
+    love.graphics.setColor(0, 255, 0, 255)
+    
+    local word = 'pause'
+    if self.paused then
+        word = 'unpause'
+    end
+    
+    love.graphics.printf("Press P to " .. word, 0, 0, VIRTUAL_WIDTH, 'center')
+    love.graphics.setColor(255, 255, 255, 255)
 
     -- pause text, if paused
     if self.paused then
