@@ -62,3 +62,15 @@ function copy(obj, seen)
     end
     return res
 end
+
+function neighbours(cells, x, y)
+    local count = 0
+    for i = math.max(y - 1, 1), math.min(y + 1, (VIRTUAL_HEIGHT - 20) / 10) do
+        for j = math.max(x - 1, 1), math.min(x + 1, VIRTUAL_WIDTH / 10) do
+            if cells[i][j] and not (i == y and j == x) then
+                count = count + 1
+            end
+        end
+    end
+    return count
+end

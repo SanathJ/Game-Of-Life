@@ -72,7 +72,6 @@ function LevelInitState:update(dt)
             local i = math.floor((y - 20) / 10) + 1
             local j = math.floor(x / 10) + 1
             -- inverts cell at mouse location
-            print(j, i, x, y)
             cells[i][j] = not cells[i][j] 
         end
     end
