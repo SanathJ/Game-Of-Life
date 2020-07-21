@@ -12,12 +12,15 @@
 -- Inherits empty methods from base class
 PlayState = Class{__includes = BaseState}
 
+-- Cells of the board
+local cells
+
 --[[
     We initialize what's in our PlayState via a state table that we pass between
     states as we go from creating to playing
 ]]
 function PlayState:enter(params)
-    self.cells = params.cells
+    cells = params.cells
 end
 
 function PlayState:update(dt)
@@ -27,7 +30,7 @@ function PlayState:update(dt)
 end
 
 function PlayState:render()
-    renderBoard(self.cells)
+    renderBoard(cells)
 
     -- pause text, if paused
     if self.paused then

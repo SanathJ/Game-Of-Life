@@ -21,7 +21,6 @@ local cells = {}
 function LevelInitState:enter(params)
     -- randomize cells if user has selected that option
     if params.setup == 2 then
-
         -- number of rows
         for i = 1, (VIRTUAL_HEIGHT - 20) / 10 do
             cells[i] = {}
@@ -30,18 +29,28 @@ function LevelInitState:enter(params)
             for j = 1, VIRTUAL_WIDTH / 10 do
                 -- whether a cell is filled
                 local filled = false
-                if math.random(10) == 7 then
+                if math.random(15) == 7 then
                     filled = true
                 end
                 cells[i][j] = filled
             end
         end
 
-        gStateMachine:change('play', cells)
+    -- else set all cells to empty
+    else
+        -- number of rows
+        for i = 1, (VIRTUAL_HEIGHT - 20) / 10 do
+            cells[i] = {}
+            -- number of columns
+            for j = 1, VIRTUAL_WIDTH / 10 do
+                cells[i][j] = false
+            end
+        end
     end    
 end
 
 function LevelInitState:update(dt)
+    
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
     end
@@ -50,9 +59,7 @@ end
 function LevelInitState:render()
     renderBoard(cells)
 
-    -- pause text, if paused
-    if self.paused then
-        love.graphics.setFont(gFonts['large'])
-        love.graphics.printf("PAUSED", 0, VIRTUAL_HEIGHT / 2 - 16, VIRTUAL_WIDTH, 'center')
-    end
+    love.graphics.setFont(gFonts['small'])
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.printf("Press enter to start", 0, 0, VIRTUAL_WIDTH, 'center')
 end

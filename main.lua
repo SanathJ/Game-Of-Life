@@ -57,9 +57,9 @@ function love.load()
 
     -- initialize our nice-looking retro text fonts
     gFonts = {
-        ['small'] = love.graphics.newFont('fonts/font.ttf', 8),
-        ['medium'] = love.graphics.newFont('fonts/font.ttf', 16),
-        ['large'] = love.graphics.newFont('fonts/font.ttf', 32)
+        ['small'] = love.graphics.newFont('fonts/font.ttf', 16),
+        ['medium'] = love.graphics.newFont('fonts/font.ttf', 32),
+        ['large'] = love.graphics.newFont('fonts/font.ttf', 64)
     }
     love.graphics.setFont(gFonts['small'])
     
