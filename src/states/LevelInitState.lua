@@ -15,6 +15,20 @@ LevelInitState = Class{__includes = BaseState}
 local cells = {}
 
 --[[
+    Initialisation of cells
+]]
+function LevelInitState:init()
+    -- number of rows
+    for i = 1, (VIRTUAL_HEIGHT - 20) / 10 do
+        cells[i] = {}
+        -- number of columns
+        for j = 1, VIRTUAL_WIDTH / 10 do
+            cells[i][j] = false
+        end
+    end
+end
+
+--[[
     We initialize what's in our LevelInit via a state table that we pass between
     states as we go from creating to playing
 ]]
@@ -35,24 +49,32 @@ function LevelInitState:enter(params)
                 cells[i][j] = filled
             end
         end
-
-    -- else set all cells to empty
-    else
-        -- number of rows
-        for i = 1, (VIRTUAL_HEIGHT - 20) / 10 do
-            cells[i] = {}
-            -- number of columns
-            for j = 1, VIRTUAL_WIDTH / 10 do
-                cells[i][j] = false
-            end
-        end
     end    
 end
 
-function LevelInitState:update(dt)
-    
+function LevelInitState:update(dt)  
+    -- quit
     if love.keyboard.wasPressed('escape') then
         love.event.quit()
+    end
+
+    -- start
+    if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
+        gStateMachine:change('play', cells)
+    end
+
+    -- else handle input to change board
+    local button = love.mouse.wasPressed(1)
+    if button ~= nil and button[1] then
+        local x = button[2]
+        local y = button[3]
+        if y >= 20 then
+            local i = math.floor((y - 20) / 10) + 1
+            local j = math.floor(x / 10) + 1
+            -- inverts cell at mouse location
+            print(j, i, x, y)
+            cells[i][j] = not cells[i][j] 
+        end
     end
 end
 
