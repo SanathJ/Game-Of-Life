@@ -17,8 +17,24 @@ LevelInitState = Class{__includes = BaseState}
     states as we go from creating to playing
 ]]
 function LevelInitState:enter(params)
-    if params.setup == 1 then
-        gStateMachine:change('play', {})
+    -- randomize cells if user has selected that option
+    if params.setup == 2 then
+        local cells = {}
+
+        -- number of rows
+        for i = 1, (VIRTUAL_HEIGHT - 20) / 5 do
+            local row = {}
+
+            -- number of columns
+            for j = 1, VIRTUAL_WIDTH / 5 do
+                -- whether a cell is filled
+                local filled = math.random(0, 1) == 0 and false or true
+                table.insert(row, filled)
+            end
+            table.insert(cells, row)
+        end
+
+        gStateMachine:change('play', cells)
     end    
 end
 
